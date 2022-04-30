@@ -4,9 +4,51 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.jsdelivr.net/gh/Kaiido/roundRect@main/roundRect.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+        }
+
+        .container .metrics {
+            width: 150px;
+            height: 60px;
+            background-color: darkblue;
+            color: white;
+            padding: 15px;
+            font-family: "Andale Mono",serif;
+            font-size: 12px;
+            position: absolute;
+            left: 620px;
+        }
+    </style>
 </head>
 <body>
-<canvas class="canvas">
-</canvas>
+<div class="container" onload="call">
+    <div class="metrics">
+        <div class="render" id="fps">FPS: $value</div>
+        <div class="render" id="nodes_total">Nodes total: $value</div>
+        <div class="render" id="nodes_screen">Nodes on screen: $value</div>
+    </div>
+    <canvas class="canvas">
+    </canvas>
+
+    <script>
+        const fpsNode = document.querySelector('#fps');
+        const renderingNodesNode = document.querySelector('#nodes_screen');
+        const totalNodesNode = document.querySelector('#nodes_total');
+
+        const base = [
+            fpsNode.textContent,
+            renderingNodesNode.textContent,
+            totalNodesNode.textContent
+        ]
+
+        window.addEventListener('canvas->stats', (event) => {
+            fpsNode.textContent = base[0].replace('$value', event.detail.fps);
+            renderingNodesNode.textContent =base[1].replace('$value', event.detail.renderNodes)
+            totalNodesNode.textContent = base[2].replace('$value', event.detail.totalNodes)
+        })
+    </script>
+</div>
 </body>
 </html>
